@@ -1,0 +1,50 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set(color_codes=True)
+
+
+import warnings
+warnings.filterwarnings ('ignore')
+
+# Load the dataset
+df1 = pd.read_csv("data.csv")
+
+df1["Has Table booking"].value_counts()
+df1["Has Online delivery"].value_counts()
+print("percentage of restaurants offers table booking : ", round((1128/(98393+1158))*100,2),"%")
+print("percentage of restaurants offers online delivery : ", round((2451/(7100+2451))*100,2),"%")
+
+
+df_with_table_booking = df1[df1['Has Table booking'] == 'Yes']
+df_without_table_booking = df1[df1['Has Table booking'] == 'No']
+print("Rows With Table Booking : ",df_with_table_booking.shape)
+print("Rows Without Table Booking : ",df_without_table_booking.shape)
+
+print("average ratings : ")
+print("with table bookings : ", round(df_with_table_booking["Aggregate rating"].mean(),2))
+print("without table bookings : ", round(df_without_table_booking["Aggregate rating"].mean(),2))
+
+
+online_delivery_by_price_range = df1.groupby('Price range')['Has Online delivery'].value_counts(normalize=True).unstack()*100
+online_delivery_by_price_range.plot(kind='bar', stacked=True, colormap='viridis' , figsize=(10,6))
+plt.title('online delivery availablity by price range')
+plt.xlabel('price range')
+plt.ylabel('percentage of restaurants with online delivery')
+plt.xticks(rotation = 0)
+plt.legend(title='Online Delivery',bbox_to_anchor = (1.05,1))
+
+
+plt.show()
+
+
+online_delivery_yes = df1[df1['Has Online delivery'] == 'Yes']
+online_delivery_counts = online_delivery_yes.groupby(['Price range','Has Online delivery']).size().unstack()
+online_delivery_counts.plot(kind='bar', stacked=True, colormap='cividis', figsize=(10,6))
+plt.title('online delivery availablity by price range')
+plt.xlabel('price range')
+plt.ylabel('number of resturants')
+plt.xticks(rotation = 0)
+plt.legend(title='Online Delivery',bbox_to_anchor = (1.05,1),loc='upper left')
+
+plt.show()

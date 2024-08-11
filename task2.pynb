@@ -1,0 +1,28 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set(color_codes=True)
+
+
+import warnings
+warnings.filterwarnings ('ignore')
+
+# Load the dataset
+df1 = pd.read_csv("data.csv")
+
+df1["Price range"].value_counts()
+most_common = df1["Price range"].mode()[0]
+print("most common price range among all the restaurants : ",most_common)
+
+avg_rating_by_price_range = df1.groupby('Price range')['Aggregate rating'].mean().round(2)
+print("average rating for each price range :")
+print(avg_rating_by_price_range)
+
+highest_avg_rating_color = avg_rating_by_price_range.idxmax()
+plt.bar(avg_rating_by_price_range.index,avg_rating_by_price_range,color='blue',width=0.5)
+plt.bar(highest_avg_rating_color,avg_rating_by_price_range[highest_avg_rating_color],color='green',width=0.5)
+
+plt.title('average rating by price range')
+plt.ylabel('average rating')
+plt.xlabel('price range')
+plt.show()

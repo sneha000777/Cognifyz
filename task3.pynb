@@ -1,0 +1,18 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set(color_codes=True)
+
+
+import warnings
+warnings.filterwarnings ('ignore')
+
+# Load the dataset
+df1 = pd.read_csv("data.csv")
+df1['Restaurant Name Length'] = df1['Restaurant Name'].apply(lambda x: len(str(x)))
+df1['Address Length'] = df1['Address'].apply(lambda x: len(str(x)))
+df1[['Restaurant Name','Restaurant Name Length','Address','Address Length']]
+
+df1['Has Table booking'] = df1['Has Table booking'].apply(lambda x:1 if x == 'Yes' else 0)
+df1['Has Online delivery'] = df1['Has Online delivery'].apply(lambda x:1 if x == 'Yes' else 0)
+df1[['Has Table booking','Has Table booking','Has Online delivery','Has Online delivery']]
